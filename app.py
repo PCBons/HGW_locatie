@@ -3,7 +3,6 @@ import streamlit.components.v1 as components
 import folium
 import shapely
 import time
-import re
 from datetime import datetime
 import geopandas as gpd
 
@@ -40,19 +39,12 @@ st.caption('Verken hieronder het gebied wat in 2u bereikbaar is vanaf Utrecht me
 @st.cache_data
 def make_map(_polygon):
 
-    m = folium.Map(location=[_polygon.centroid.y, _polygon.centroid.x], zoom_start=8, width="100%", height="100%")
+    m = folium.Map(location=[_polygon.centroid.y, _polygon.centroid.x], zoom_start=7, width="100%", height="100%")
     folium.GeoJson(shapely.to_geojson(_polygon)).add_to(m)
     return m
 
 polygon = import_data('polygon_HGW.geojson')
 m = make_map(polygon)
 
-html = m._repr_html_()
-
-# Vervang vaste pixel breedtes/hoogtes en de padding-bottom truc die folium gebruikt
-html = re.sub(r'width: \d+\.?\d*px', 'width: 100%', html)
-html = re.sub(r'height: \d+\.?\d*px', 'height: 100vh', html)
-html = re.sub(r'padding-bottom: \d+\.?\d*%', 'padding-bottom: 0; height: 100vh', html)
-
-components.html(html, height=1000)
+components.html(m._repr_html_(), height=1500)
 
