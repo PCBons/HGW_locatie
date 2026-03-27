@@ -13,7 +13,7 @@ def import_data(filename):
     return polygon
 
 st.title('Zoektocht naar de HGW-locatie')
-st.caption('verken hieronder het gebied wat in 2u bereikbaar is vanaf Utecht met de auto (uitgaande van een vertrektijd 16:00 op 25-09-2026).')
+st.caption('Verken hieronder het gebied wat in 2u bereikbaar is vanaf Utrecht met de auto (uitgaande van een vertrektijd 16:00 op 25-09-2026).')
 
 @st.cache_data
 def make_map(_polygon):
