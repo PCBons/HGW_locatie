@@ -3,6 +3,7 @@ import streamlit.components.v1 as components
 import folium
 import shapely
 import time
+import re
 from datetime import datetime
 import geopandas as gpd
 
@@ -48,29 +49,10 @@ m = make_map(polygon)
 
 html = m._repr_html_()
 
-html = f"""
-<html>
-<head>
-<style>
-    body, html {{ margin: 0; padding: 0; height: 100%; }}
-    #map {{ width: 100%; height: 100vh; }}
-</style>
-</head>
-<body>
-    {html}
-<script>
-    // Pas de folium kaart div aan naar volledige hoogte
-    document.addEventListener("DOMContentLoaded", function() {{
-        var mapDiv = document.querySelector(".folium-map");
-        if (mapDiv) {{
-            mapDiv.style.width = "100%";
-            mapDiv.style.height = "100vh";
-        }}
-    }});
-</script>
-</body>
-</html>
-"""
+# Vervang vaste pixel breedtes/hoogtes en de padding-bottom truc die folium gebruikt
+html = re.sub(r'width: \d+\.?\d*px', 'width: 100%', html)
+html = re.sub(r'height: \d+\.?\d*px', 'height: 100vh', html)
+html = re.sub(r'padding-bottom: \d+\.?\d*%', 'padding-bottom: 0; height: 100vh', html)
 
-components.html(html, height=1000, scrolling=False)
+components.html(html, height=1000)
 
