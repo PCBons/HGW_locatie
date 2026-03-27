@@ -1,5 +1,3 @@
 streamlit==1.55
 geopandas
 folium
-time
-datetime
