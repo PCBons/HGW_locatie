@@ -46,13 +46,31 @@ def make_map(_polygon):
 polygon = import_data('polygon_HGW.geojson')
 m = make_map(polygon)
 
-st.markdown("""
-    <style>
-        iframe {
-            width: 100% !important;
-            min-height: 1000px !important;
-        }
-    </style>
-""", unsafe_allow_html=True)
-components.html(m._repr_html_(), height=1500)
+html = m._repr_html_()
+
+html = f"""
+<html>
+<head>
+<style>
+    body, html {{ margin: 0; padding: 0; height: 100%; }}
+    #map {{ width: 100%; height: 100vh; }}
+</style>
+</head>
+<body>
+    {html}
+<script>
+    // Pas de folium kaart div aan naar volledige hoogte
+    document.addEventListener("DOMContentLoaded", function() {{
+        var mapDiv = document.querySelector(".folium-map");
+        if (mapDiv) {{
+            mapDiv.style.width = "100%";
+            mapDiv.style.height = "100vh";
+        }}
+    }});
+</script>
+</body>
+</html>
+"""
+
+components.html(html, height=1000, scrolling=False)
 
