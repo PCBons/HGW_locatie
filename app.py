@@ -45,5 +45,5 @@ def make_map(_polygon):
 
 polygon = import_data('polygon_HGW.geojson')
 m = make_map(polygon)
-components.html(m._repr_html_(), height=800)
+components.html(m._repr_html_(), height=1500)
 
