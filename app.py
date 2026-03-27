@@ -1,5 +1,5 @@
 import streamlit as st
-from streamlit_folium import st_folium
+import streamlit.components.v1 as components
 import folium
 import shapely
 import geopandas as gpd
@@ -24,4 +24,5 @@ def make_map(_polygon):
 
 polygon = import_data('polygon_HGW.geojson')
 m = make_map(polygon)
-st_folium(m, width=700, height=500, returned_objects=[])
+components.html(m._repr_html_(), height=800)
+
