@@ -40,8 +40,8 @@ def countdown():
 
 countdown()
 
-@st.dialog(title = "Van Lennep over Drente")
-def drente():
+@st.dialog(title = "Van Lennep over Drenthe")
+def drenthe():
     st.markdown("""
 <i>“De Drenthenaar bezit alle deugden en gebreken welke onafscheidelijk zijn van zijn 
 eenzaam landlijk leven. - Wanneer men in een gering gehucht eene kleine stulp bewoont, 
@@ -59,8 +59,8 @@ hebben.”</i>
 
 st.caption('Verken hieronder het gebied wat in 2u bereikbaar is vanaf Utrecht met de auto (uitgaande van een vertrektijd 16:00 op 25-09-2026).')
 st.caption('In het rood een benadering van de beroemde voettocht van Jacob van Lennep. De plaatsnamen zijn geëxtraheerd uit zijn dagboek in chronologische volgorde.')
-if st.button("Van Lennep over Drente"):
-        drente()
+if st.button("Van Lennep over Drenthe"):
+        drenthe()
     
 
 #@st.cache_data
