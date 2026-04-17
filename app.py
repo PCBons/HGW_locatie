@@ -58,7 +58,7 @@ hebben.”</i>
 """,  unsafe_allow_html=True)
 
 st.caption('Verken hieronder het gebied wat in 2u bereikbaar is vanaf Utrecht met de auto (uitgaande van een vertrektijd 16:00 op 25-09-2026).')
-st.caption('In het rood een benadering van de beroemde voettocht van Jacob van Lennep. De plaatsnamen zijn geëxtraheerd uit zijn dagboek in chronologische volgorde.')
+st.caption('In het rood een benadering van de beroemde voettocht van Jacob van Lennep - gereconstrueerd door de plaatsnamen in chronologische volgorde uit zijn dagboek te extraheren.')
 if st.button("Van Lennep over Drenthe"):
         drenthe()
     
