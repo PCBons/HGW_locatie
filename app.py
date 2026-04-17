@@ -41,7 +41,7 @@ def countdown():
 countdown()
 
 st.caption('Verken hieronder het gebied wat in 2u bereikbaar is vanaf Utrecht met de auto (uitgaande van een vertrektijd 16:00 op 25-09-2026).')
-st.caption('In het rood een benadering van de beroemde voettocht van Jacob van Lennep. De verbindt plaatsnamen geëxtraheerd uit zijn dagboek in chronologische volgorde.')
+st.caption('In het rood een benadering van de beroemde voettocht van Jacob van Lennep. De plaatsnamen zijn geëxtraheerd uit zijn dagboek in chronologische volgorde.')
 with st.popover("Van Lennep over Drente"):
     st.markdown("""
 <i>“De Drenthenaar bezit alle deugden en gebreken welke onafscheidelijk zijn van zijn 
