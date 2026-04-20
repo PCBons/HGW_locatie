@@ -55,7 +55,7 @@ components.html(f"""
 
     <!-- Button view (hidden until live) -->
     <div id="button-view" style="display:none; text-align:center;">
-        <a href="https://hgw2026.info/index.html?preview" target="_blank" class="big-btn">
+        <a href="https://puurgenieten:puurgenieten@hgw2026.info/index.html?preview" target="_blank" class="big-btn">
             Bekijk HGW 2026 &rarr;
         </a>
     </div>
