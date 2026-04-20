@@ -1,87 +1,125 @@
 import streamlit as st
 import streamlit.components.v1 as components
-import folium
-import shapely
-import time
-from datetime import datetime
-import geopandas as gpd
+from datetime import datetime, timedelta
 
-st.set_page_config(layout="wide")
+st.set_page_config(page_title="HGW 2026", layout="wide")
 
-@st.cache_data
-def import_data(filename):
-    gdf = gpd.read_file(filename)
-    polygon = gdf.iloc[0]['geometry']
-    return polygon
+st.markdown("""
+<style>
+  .block-container { padding-top: 2rem !important; }
+  header[data-testid="stHeader"] { height: 1.2rem; }
+  [data-testid="stSidebarNav"] { display: none; }
+  [data-testid="stSidebar"] { display: none; }
+</style>
+""", unsafe_allow_html=True)
 
-@st.cache_data
-def import_route(filename):
-    gdf = gpd.read_file(filename)
-    line = gdf.iloc[0]['geometry']
-    return line
+TARGET = datetime(2026, 4, 22, 17, 0, 0)
+target_ms = int(TARGET.timestamp() * 1000)
 
-st.title('Zoektocht naar de HGW-locatie')
+components.html(f"""
+<div id="wrapper" style="
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    min-height:85vh; font-family:sans-serif; background:#fff;
+">
+    <!-- Countdown view -->
+    <div id="countdown-view">
+        <div style="font-size:1.6rem; color:#555; margin-bottom:24px; letter-spacing:0.05em; text-align:center;">
+            De locatie wordt onthuld op woensdag 22 april om 17:00
+        </div>
+        <div id="clock" style="display:flex; gap:32px; align-items:flex-end; justify-content:center;"></div>
+        <div style="
+            display:flex; gap:32px; margin-top:12px; justify-content:center;
+            font-size:1rem; color:#aaa; letter-spacing:0.05em;
+        ">
+            <span style="min-width:7rem;text-align:center;">dagen</span>
+            <span style="min-width:1rem;"></span>
+            <span style="min-width:7rem;text-align:center;">uren</span>
+            <span style="min-width:1rem;"></span>
+            <span style="min-width:7rem;text-align:center;">minuten</span>
+            <span style="min-width:1rem;"></span>
+            <span style="min-width:7rem;text-align:center;">seconden</span>
+        </div>
+    </div>
 
-@st.fragment(run_every=1)
-def countdown():
-    target = datetime(2026, 4, 25, 18, 0, 0)
-    remaining = target - datetime.now()
+    <!-- Button view (hidden until live) -->
+    <div id="button-view" style="display:none;">
+        <a href="https://hgw2026.info/index.html?preview" target="_blank" style="
+            display:inline-block;
+            background-color:#00B050;
+            color:white;
+            font-size:2.5rem;
+            font-weight:bold;
+            padding:40px 80px;
+            border-radius:20px;
+            text-decoration:none;
+            text-align:center;
+            box-shadow:0 8px 30px rgba(0,0,0,0.2);
+            transition:transform 0.1s;
+        " onmouseover="this.style.transform='scale(1.04)'"
+           onmouseout="this.style.transform='scale(1)'">
+            Bekijk HGW 2026 &rarr;
+        </a>
+    </div>
+</div>
 
-    if remaining.total_seconds() <= 0:
-        st.success("🎉 De nieuwe hints moeten nu bekendgemaakt worden!!")
-        return
+<style>
+  .unit {{
+    display:flex; flex-direction:column; align-items:center;
+    min-width:7rem;
+  }}
+  .num {{
+    font-size:7rem;
+    font-weight:900;
+    line-height:1;
+    color:#1a1a1a;
+    text-align:center;
+  }}
+  .sep {{
+    font-size:6rem;
+    font-weight:900;
+    color:#ccc;
+    line-height:1;
+    padding-bottom:4px;
+  }}
+</style>
 
-    days = remaining.days
-    hours, rem = divmod(remaining.seconds, 3600)
-    minutes, seconds = divmod(rem, 60)
+<script>
+  const target = {target_ms};
 
-    st.metric("Aftellen tot de volgende hints bekendgemaakt worden...",
-              f"{days}d {hours:02}u {minutes:02}m {seconds:02}s")
+  function pad(n) {{ return String(n).padStart(2, '0'); }}
 
-countdown()
+  function tick() {{
+    const now = Date.now();
+    let diff = Math.max(0, target - now);
 
-@st.dialog(title = "Van Lennep over Drenthe")
-def drenthe():
-    st.markdown("""
-<i>“De Drenthenaar bezit alle deugden en gebreken welke onafscheidelijk zijn van zijn 
-eenzaam landlijk leven. - Wanneer men in een gering gehucht eene kleine stulp bewoont, 
-zelve onbemiddeld en onkundig is en tot naburen en medeburgers alleen dezulken heeft, 
-wanneer men niet in de gelegenheid is meer grond te bebouwen dan men voor zijn eigen 
-huisgezin van nooden heeft en er dus weinig of niets overschiet om in grootere plaatsen ter 
-markt te brengen, dan kunnen er tusschen zoodanigen en de inwooners van grootere plaatsen 
-weinige of geene naauwe betrekkingen stand grijpen: dan leeren zij de overtollige dingen niet 
-kennen, welke de stedeling als noodzakelijke beschouwt; dan geven zij zich aan de weelde 
-niet over welke deze najaagt; maar leven stil, eenvoudig, onnoozel voort als hunne ouders en 
-voorouders deden; verlangen niet wat zij niet kennen, zijn onbezorgd voor het vervolg, en 
-geven weer aan hun nakroost hetzelfde voorbeeld dat zij van hun voorgeslacht ontfangen 
-hebben.”</i>
-""",  unsafe_allow_html=True)
+    const days    = Math.floor(diff / 86400000); diff -= days * 86400000;
+    const hours   = Math.floor(diff /  3600000); diff -= hours * 3600000;
+    const minutes = Math.floor(diff /    60000); diff -= minutes * 60000;
+    const seconds = Math.floor(diff /     1000);
 
-st.caption('Verken hieronder het gebied wat in 2u bereikbaar is vanaf Utrecht met de auto (uitgaande van een vertrektijd 16:00 op 25-09-2026).')
-st.caption('In het rood een benadering van de beroemde voettocht van Jacob van Lennep - gereconstrueerd door de plaatsnamen in chronologische volgorde uit zijn dagboek te extraheren.')
-if st.button("Van Lennep over Drenthe"):
-        drenthe()
-    
+    const clock = document.getElementById('clock');
+    clock.innerHTML =
+      `<div class="unit"><span class="num">${{pad(days)}}</span></div>` +
+      `<div class="sep">:</div>` +
+      `<div class="unit"><span class="num">${{pad(hours)}}</span></div>` +
+      `<div class="sep">:</div>` +
+      `<div class="unit"><span class="num">${{pad(minutes)}}</span></div>` +
+      `<div class="sep">:</div>` +
+      `<div class="unit"><span class="num">${{pad(seconds)}}</span></div>`;
 
-#@st.cache_data
-def make_map(_polygon, _line):
+    if (diff <= 0) {{
+      clearInterval(timer);
+      document.getElementById('countdown-view').style.display = 'none';
+      document.getElementById('button-view').style.display = 'block';
+    }}
+  }}
 
-    m = folium.Map(location=[_polygon.centroid.y, _polygon.centroid.x], zoom_start=7, width="100%", height="100%")
-    folium.GeoJson(shapely.to_geojson(_polygon)).add_to(m)
-    folium.GeoJson(
-        shapely.to_geojson(_line),
-        style_function=lambda feature: {
-            'color': 'red',     # lijnkleur
-            'weight': 5,        # dikte
-            'opacity': 0.8      # transparantie
-        }
-).add_to(m)
-
-    return m
-
-polygon = import_data('data/polygon_HGW.geojson')
-line = import_route('data/van_lennep_1823_route_only.geojson')
-m = make_map(polygon, line)
-
-components.html(m._repr_html_(), height=1500)
-
+  if (Date.now() >= target) {{
+    document.getElementById('countdown-view').style.display = 'none';
+    document.getElementById('button-view').style.display = 'block';
+  }} else {{
+    tick();
+    const timer = setInterval(tick, 1000);
+  }}
+</script>
+""", height=600)
