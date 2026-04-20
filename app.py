@@ -13,8 +13,9 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-TARGET = datetime(2026, 4, 22, 17, 0, 0)
+TARGET = datetime(2026, 4, 20, 10, 0, 0)
 target_ms = int(TARGET.timestamp() * 1000)
+preview_url = st.secrets["preview_url"]
 
 components.html(f"""
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -55,7 +56,7 @@ components.html(f"""
 
     <!-- Button view (hidden until live) -->
     <div id="button-view" style="display:none; text-align:center;">
-        <a href="https://puurgenieten:puurgenieten@hgw2026.info/index.html?preview" target="_blank" class="big-btn">
+        <a href="{preview_url}" target="_blank" class="big-btn">
             Bekijk HGW 2026 &rarr;
         </a>
     </div>
