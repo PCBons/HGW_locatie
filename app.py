@@ -153,12 +153,13 @@ components.html(f"""
     }}
   }}
 
+  let timer;
   if (Date.now() >= target) {{
     document.getElementById('countdown-view').style.display = 'none';
     document.getElementById('button-view').style.display = 'block';
   }} else {{
     tick();
-    const timer = setInterval(tick, 1000);
+    timer = setInterval(tick, 1000);
   }}
 </script>
 """, height=600)
