@@ -13,7 +13,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-TARGET = datetime(2026, 4, 22, 17, 0, 0)
+TARGET = datetime(2026, 4, 22, 15, 0, 0)
 target_ms = int(TARGET.timestamp() * 1000)
 preview_url = st.secrets["preview_url"]
 
